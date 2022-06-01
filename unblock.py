@@ -1,6 +1,10 @@
 import pywikibot
 from pywikibot import pagegenerators, textlib
 
+def can_run(site):
+	page = pywikibot.Page(site, u'Discussion utilisateur:Mathis bot')
+	return True if not page.text else False
+
 def get_users(site):
 	cat = pywikibot.Category(site, u'Catégorie:Demande de déblocage')
 	gen = pagegenerators.CategorizedPageGenerator(cat)
@@ -40,8 +44,10 @@ def make_ra(users, site):
 
 def main():
 	site = pywikibot.Site()
-	users = get_users(site)
-	make_ra(users, site)
+
+	if can_run(site):
+		users = get_users(site)
+		make_ra(users, site)
 
 if __name__ == '__main__':
 	main()
