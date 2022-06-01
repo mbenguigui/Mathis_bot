@@ -30,17 +30,16 @@ def check_open_ra(text, user):
 def make_ra(users, site):
 	page = pywikibot.Page(site, u'Wikipédia:Requête aux administrateurs')
 	text = page.text
-
-	if not users:
-		return False
+	save_page = False
 
 	for user in users:
-		existing_ra = check_open_ra(text, user)
-		if not existing_ra:
+		if not check_open_ra(text, user):
 			text += u'\n\n{{subst:Utilisateur:Mathis bot/unblock|%s}}' % user
+			save_page = True
 
-	page.text = text
-	page.save(u'/* Demande de déblocage de %s */ nouvelle section' % users[0], botflag=False)
+	if save_page:
+		page.text = text
+		page.save(u'/* Demande de déblocage de %s */ nouvelle section' % users[0], botflag=False)
 
 def main():
 	site = pywikibot.Site()
