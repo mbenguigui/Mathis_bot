@@ -40,7 +40,7 @@ def make_ra(users, site):
 			text += u'\n\n{{subst:Utilisateur:Mathis bot/unblock|%s}}' % user
 
 	page.text = text
-	page.save(u'/* Demande de déblocage de %s */ nouvelle section' % users[0])
+	page.save(u'/* Demande de déblocage de %s */ nouvelle section' % users[0], botflag=False)
 
 def main():
 	site = pywikibot.Site()
