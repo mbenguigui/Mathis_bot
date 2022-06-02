@@ -36,6 +36,8 @@ def make_ra(users, site):
 		if not check_open_ra(text, user):
 			text += u'\n\n{{subst:Utilisateur:Mathis bot/unblock|%s}}' % user
 			save_page = True
+		else:
+			users.remove(user)
 
 	if save_page:
 		page.text = text
