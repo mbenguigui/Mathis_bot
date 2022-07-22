@@ -3,7 +3,7 @@ from pywikibot import pagegenerators, textlib
 
 def can_run(site):
 	page = pywikibot.Page(site, u'Discussion utilisateur:Mathis bot')
-	return True if not page.text else False
+	return not page.text
 
 def get_users(site):
 	cat = pywikibot.Category(site, u'Catégorie:Demande de déblocage')
@@ -31,20 +31,21 @@ def make_ra(users, site):
 	page = pywikibot.Page(site, u'Wikipédia:Requête aux administrateurs')
 	text = page.text
 	save_page = False
+	edit_summary_user = ''
 
 	for user in users:
 		if not check_open_ra(text, user):
+			if not edit_summary_user:
+				edit_summary_user = user
 			text += u'\n\n{{subst:Utilisateur:Mathis bot/unblock|%s}}' % user
 			save_page = True
-		else:
-			users.remove(user)
 
 	if save_page:
 		page.text = text
-		page.save(u'/* Demande de déblocage de %s */ nouvelle section' % users[0], botflag=False)
+		page.save(u'/* Demande de déblocage de %s */ nouvelle section' % edit_summary_user, botflag=False)
 
 def main():
-	site = pywikibot.Site()
+	site = pywikibot.Site('fr', 'wikipedia')
 
 	if can_run(site):
 		users = get_users(site)
