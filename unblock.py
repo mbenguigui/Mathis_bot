@@ -18,8 +18,8 @@ def get_users(site):
 def check_open_ra(text, user):
 	match = u'== Demande de déblocage de %s ==' % user
 	if match in text:
-		ra = text[text.index(match):]
-		ra = ra[:ra.rindex(u"{{RA fin}}")]
+		ra = text[text.rindex(match):]
+		ra = ra[:ra.index(u"{{RA fin}}")]
 		templates = textlib.extract_templates_and_params(ra)
 		for template in templates:
 			if template[0] == u"RA début":
