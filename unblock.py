@@ -1,9 +1,6 @@
 import pywikibot
 from pywikibot import pagegenerators, textlib
-
-def can_run(site):
-	page = pywikibot.Page(site, u'Discussion utilisateur:Mathis bot')
-	return not page.text
+from can_run import can_run
 
 def get_users(site):
 	cat = pywikibot.Category(site, u'Catégorie:Demande de déblocage')
