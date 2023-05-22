@@ -15,8 +15,9 @@ def fix_redirects(site):
             text = text.replace(values["oldtext"], values["newtext"])
 
         page.text = text
-        if can_run(site):
-            page.save(u'[[Spécial:Diff/204497617#Correction_de_palettes|Remplacement de redirections sur palettes]]')
+        if not can_run(site):
+            break
+        page.save(u'[[Spécial:Diff/204497617#Correction_de_palettes|Remplacement de redirections sur palettes]]')
 
 
 def main():
