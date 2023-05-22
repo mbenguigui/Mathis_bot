@@ -15,14 +15,14 @@ def fix_redirects(site):
             text = text.replace(values["oldtext"], values["newtext"])
 
         page.text = text
-        page.save(u'[[Spécial:Diff/204497617#Correction_de_palettes|Remplacement de redirections sur palettes]]')
+        if can_run(site):
+            page.save(u'[[Spécial:Diff/204497617#Correction_de_palettes|Remplacement de redirections sur palettes]]')
 
 
 def main():
     site = pywikibot.Site('fr', 'wikipedia')
 
-    if can_run(site):
-        fix_redirects(site)
+    fix_redirects(site)
 
 
 if __name__ == '__main__':
