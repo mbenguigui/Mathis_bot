@@ -1,5 +1,9 @@
 # Mathis_bot
 
-Mathis bot se charge de faire une requête aux administrateurs de la Wikipédia en français quand un utilisateur demande son déblocage.
+Mathis bot est un bot actif sur Wikipédia en français. Il est actuellement chargé de deux tâches automatisées dont le code est sur ce dépôt :
+- faire une requête aux administrateurs quand un utilisateur demande son déblocage ;
+- mettre à jour la page de suivi des nouvelles demandes du projet bases.
+
+Il est également utilisé occasionnellement avec des gadgets semi-automatiques.
 
 En cas de bug, laissez un message (au moins un caractère) sur sa page de discussion, il s'arrêtera automatiquement. 
