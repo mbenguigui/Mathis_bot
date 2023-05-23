@@ -18,7 +18,7 @@ def fix_redirects(site):
             break
 
         page.text = text
-        page.save(u'[[Spécial:Diff/204497617#Correction_de_palettes|Remplacement de redirections sur palettes]]')
+        page.save(u'[[WP:RBOT|Requête bot]] : [[Spécial:Diff/204497617#Correction_de_palettes|Remplacement de redirections sur palettes]]')
 
 
 def main():
