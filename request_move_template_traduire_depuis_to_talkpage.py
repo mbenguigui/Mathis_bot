@@ -9,6 +9,9 @@ def move_template(site):
         article = pywikibot.Page(site, page)
         talkpage = pywikibot.Page(site, 'Discussion:' + page)
 
+        if not can_run(site):
+            break
+
         article_text = article.text
         templates = textlib.extract_templates_and_params(article_text)
         for template in templates:
@@ -20,9 +23,6 @@ def move_template(site):
 
                 talkpage_text = talkpage.text
                 talkpage_text = add_text + u'\n' + talkpage_text
-
-                if not can_run(site):
-                    break
 
                 talkpage.text = talkpage_text
                 talkpage.save(u'[[WP:RBOT|Requête bot]] : [[Spécial:Diff/204659531#Catégorie:Article à améliorer par une traduction|Déplacement du modèle {{Traduire depuis}} en page de discussion]]')
