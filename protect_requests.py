@@ -30,7 +30,7 @@ def close_dpp(section_content, article, admin, protect):
         protect_time = u'jusqu\'au {} {} {} à {}:{:0>2} (UTC)'.format(end_date.day, month[end_date.month-1],
                                                                       end_date.year, end_date.hour, end_date.minute)
 
-    message = u'\n:{{fait}} Page {} mise en {} {} par {}\n'.format(article, protect_level, protect_time, admin)
+    message = u'\n:{} Page {} mise en {} {} par {}\n'.format(u'{{fait}}', article, protect_level, protect_time, admin)
 
     match = section_content.find(u'<!-- Ne pas modifier la ligne qui suit -->')
     if match == -1:
