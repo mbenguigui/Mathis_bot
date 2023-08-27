@@ -36,7 +36,20 @@ def close_dpp(section_content, article, admin, protect):
     if match == -1:
         return False, section_content
     end_section = section_content[match:]
-    return True, section_content.replace(end_section, message) + end_section
+    section_content = section_content.replace(end_section, message) + end_section
+
+    match = u'{{DPP début|statut=|date=<!--~~~~~-->}}'
+    if section_content.find(match) == -1:
+        match = u'{{DPP début|statut=attente'
+        replace = u'{{DPP début|statut=attente'
+        if section_content.find(match) == -1:
+            match = u'{{DPP début|statut=autre'
+            replace = u'{{DPP début|statut=autre'
+            if section_content.find(match) == -1:
+                return True, section_content
+    section_content = section_content.replace(match, replace, 1)
+
+    return True, section_content
 
 
 def check_protect(current_time, article, site, section_content):
