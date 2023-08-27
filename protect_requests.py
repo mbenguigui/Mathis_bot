@@ -5,7 +5,41 @@ from can_run import can_run
 from datetime import datetime, timedelta
 
 
-def check_protect(current_time, article, template, site):
+def close_dpp(section_content, article, admin, protect):
+    protect_type = u'edit'
+    if u'create' in protect:
+        protect_type = u'create'
+    elif u'edit' not in protect:
+        protect_type = u'move'
+
+    if protect[protect_type][0] == 'sysop':
+        protect_level = u'protection'
+    elif protect[protect_type][0] == 'autoconfirmed':
+        protect_level = u'semi-protection'
+    elif protect[protect_type][0] == 'autopatrolled':
+        protect_level = u'semi-protection étendue'
+    else:
+        protect_level = str()
+
+    if protect[protect_type][1] == 'infinity':
+        protect_time = u'indéfiniment'
+    else:
+        end_date = datetime.strptime(protect[protect_type][1], '%Y-%m-%dT%H:%M:%SZ')
+        month = ( u'janvier', u'février', u'mars', u'avril', u'mai', u'juin', u'juillet', u'août', u'septembre',
+                  u'octobre', u'novembre', u'décembre' )
+        protect_time = u'jusqu\'au {} {} {} à {}:{:0>2} (UTC)'.format(end_date.day, month[end_date.month-1],
+                                                                      end_date.year, end_date.hour, end_date.minute)
+
+    message = u'\n:{{fait}} Page {} mise en {} {} par {}\n'.format(article, protect_level, protect_time, admin)
+
+    match = section_content.find(u'<!-- Ne pas modifier la ligne qui suit -->')
+    if match == -1:
+        return False, section_content
+    end_section = section_content[match:]
+    return True, section_content.replace(end_section, message) + end_section
+
+
+def check_protect(current_time, article, site, section_content):
     page = pywikibot.Page(site, article)
     protect = page.protection()
     if protect:
@@ -26,10 +60,9 @@ def check_protect(current_time, article, template, site):
         start_date = datetime.strptime(log['timestamp'], '%Y-%m-%dT%H:%M:%SZ')
 
         if start_date >= current_time - timedelta(minutes=10):
-            template[1][u'statut'] = u'oui'
-            return True
+            return close_dpp(section_content, article, log['user'], protect)
 
-    return False
+    return False, section_content
 
 
 def list_open_dpp(current_time, site):
@@ -37,23 +70,29 @@ def list_open_dpp(current_time, site):
     full_text = page.text
     sections = textlib.extract_sections(full_text, site)
     save_page = False
+    new_text = u'<pre>{{Wikipédia:Demande de protection de page/En-tête}}'
 
     for section in sections.sections:
+        section_content = section.content.strip()
+
         if section.title.startswith(u'== {{a\'|'):
             title_templates = textlib.extract_templates_and_params(section.title)
             for title_template in title_templates:
                 article = title_template[1][u'1']
-                section_content = section.content.strip()
                 section_templates = textlib.extract_templates_and_params(section_content)
                 for section_template in section_templates:
                     if section_template[0] == u'DPP début':
                         if not section_template[1][u'statut'] \
                                 or section_template[1][u'statut'] == u'attente' \
                                 or section_template[1][u'statut'] == u'autre':
-                            save_page = check_protect(current_time, article, section_template, site)
+                            check, section_content = check_protect(current_time, article, site, section_content)
+                            if check:
+                                save_page = True
+
+        new_text += '\n\n' + section.title + '\n' + section_content
 
     if save_page:
-        page.save()
+        page.save(u'Robot : clôture des demandes traitées')
 
 
 def main():
