@@ -70,7 +70,7 @@ def list_open_dpp(current_time, site):
     full_text = page.text
     sections = textlib.extract_sections(full_text, site)
     save_page = False
-    new_text = u'<pre>{{Wikipédia:Demande de protection de page/En-tête}}'
+    new_text = u'{{Wikipédia:Demande de protection de page/En-tête}}'
 
     for section in sections.sections:
         section_content = section.content.strip()
@@ -92,6 +92,7 @@ def list_open_dpp(current_time, site):
         new_text += '\n\n' + section.title + '\n' + section_content
 
     if save_page:
+        page.text = new_text
         page.save(u'Robot : clôture des demandes traitées')
 
 
