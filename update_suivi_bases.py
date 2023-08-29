@@ -17,7 +17,7 @@ def update_suivi_bases(site):
             if m:
                 res += f"* {{{{WD P|{m[1]}}}}}, {m[2]}\n"
             else:
-                res += f"* {str(section.title).strip()}"
+                res += f"* {str(section.title).strip()}\n"
 
     res += u'\nVoir les discussions dans l’[[Wikipédia:Ateliers Bases/Nouveautés|atelier nouveautés]]\n\n' \
            u'<noinclude>[[Catégorie:Projet:Bases|Nouveautes]]</noinclude>'
