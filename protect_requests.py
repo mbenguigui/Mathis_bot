@@ -39,7 +39,7 @@ def close_dpp(section_content, article, admin, protect):
     section_content = section_content.replace(end_section, message) + end_section
 
     match = u'{{DPP début|statut=|date=<!--~~~~~-->}}'
-    replace = u'{{DPP début|statut=oui|date=<!--~~~~~-->}}'
+    replace = u'{{DPP début|statut=oui|date=~~~~~}}'
     if section_content.find(match) == -1:
         match = u'{{DPP début|statut=attente'
         replace = u'{{DPP début|statut=oui'
