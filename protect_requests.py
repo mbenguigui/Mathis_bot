@@ -1,11 +1,11 @@
 import pywikibot
 import requests
 from pywikibot import textlib
-from can_run import can_run
+from mathis_bot_tools import can_run, timestamp_to_date, utc_to_paris
 from datetime import datetime, timedelta
 
 
-def close_dpp(section_content, article, revid, admin, protect):
+def close_dpp(section_content, article, revid, start_date, admin, protect):
     protect_type = u'edit'
     if u'create' in protect:
         protect_type = u'create'
@@ -21,16 +21,20 @@ def close_dpp(section_content, article, revid, admin, protect):
     else:
         protect_level = str()
 
-    if protect[protect_type][1] == 'infinity':
-        protect_time = u'indéfiniment'
-    else:
-        end_date = datetime.strptime(protect[protect_type][1], '%Y-%m-%dT%H:%M:%SZ')
-        month = ( u'janvier', u'février', u'mars', u'avril', u'mai', u'juin', u'juillet', u'août', u'septembre',
-                  u'octobre', u'novembre', u'décembre' )
-        protect_time = u'jusqu\'au {} {} {} à {}:{:0>2} (UTC)'.format(end_date.day, month[end_date.month-1],
-                                                                      end_date.year, end_date.hour, end_date.minute)
+    protect_start = timestamp_to_date(utc_to_paris(start_date))
 
-    message = u'\n:{} Page {} [[Spécial:Diff/{}|mise]] en {} {} par {}. ~~~~\n'.format(u'{{fait}}', article, revid, protect_level, protect_time, admin)
+    if protect[protect_type][1] == 'infinity':
+        protect_end = u'indéfiniment'
+    else:
+        protect_end = timestamp_to_date(utc_to_paris(datetime.strptime(protect[protect_type][1], '%Y-%m-%dT%H:%M:%SZ')))
+
+    message = u'\n:{} Page {} mise en {} {} par {} le [[Spécial:Diff/{}|{}]]. ~~~~\n'.format(u'{{fait}}',
+                                                                                             article,
+                                                                                             protect_level,
+                                                                                             protect_end,
+                                                                                             admin,
+                                                                                             revid,
+                                                                                             protect_start)
 
     match = section_content.find(u'<!-- Ne pas modifier la ligne qui suit -->')
     if match == -1:
@@ -74,7 +78,7 @@ def check_protect(current_time, article, site, section_content):
         start_date = datetime.strptime(log['timestamp'], '%Y-%m-%dT%H:%M:%SZ')
 
         if start_date >= current_time - timedelta(minutes=10):
-            return close_dpp(section_content, article, log['revid'], log['user'], protect)
+            return close_dpp(section_content, article, log['revid'], log['user'], start_date, protect)
 
     return False, section_content
 
