@@ -89,7 +89,6 @@ def list_open_dpp(current_time, site):
     for section in sections.sections:
         section_content = section.content
 
-        print(section_content)
         if section.title.startswith(u'== {{a\'|'):
             title_templates = textlib.extract_templates_and_params(section.title)
             for title_template in title_templates:
