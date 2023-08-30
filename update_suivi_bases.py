@@ -1,7 +1,7 @@
 import re
 import mwparserfromhell
 import pywikibot
-from can_run import can_run
+from mathis_bot_tools import can_run
 
 
 def update_suivi_bases(site):

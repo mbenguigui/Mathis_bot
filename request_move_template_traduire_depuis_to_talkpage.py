@@ -1,5 +1,5 @@
 import pywikibot
-from can_run import can_run
+from mathis_bot_tools import can_run
 from pywikibot import textlib
 
 def move_template(site):

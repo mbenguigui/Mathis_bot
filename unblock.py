@@ -1,6 +1,6 @@
 import pywikibot
 from pywikibot import pagegenerators, textlib
-from can_run import can_run
+from mathis_bot_tools import can_run
 
 
 def get_users(site):
