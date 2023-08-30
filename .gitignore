@@ -132,3 +132,4 @@ dmypy.json
 /user-config.py
 /scripts
 /user-password.py
+/apicache-py3
