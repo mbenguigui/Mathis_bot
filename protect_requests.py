@@ -5,7 +5,7 @@ from can_run import can_run
 from datetime import datetime, timedelta
 
 
-def close_dpp(section_content, article, admin, protect):
+def close_dpp(section_content, article, revid, admin, protect):
     protect_type = u'edit'
     if u'create' in protect:
         protect_type = u'create'
@@ -13,11 +13,11 @@ def close_dpp(section_content, article, admin, protect):
         protect_type = u'move'
 
     if protect[protect_type][0] == 'sysop':
-        protect_level = u'protection'
+        protect_level = u'[[Wikipédia:Protection|protection]]'
     elif protect[protect_type][0] == 'autoconfirmed':
-        protect_level = u'semi-protection'
+        protect_level = u'[[Wikipédia:Semi-protection|semi-protection]]'
     elif protect[protect_type][0] == 'autopatrolled':
-        protect_level = u'semi-protection étendue'
+        protect_level = u'[[Wikipédia:Semi-protection|semi-protection étendue]]'
     else:
         protect_level = str()
 
@@ -30,7 +30,7 @@ def close_dpp(section_content, article, admin, protect):
         protect_time = u'jusqu\'au {} {} {} à {}:{:0>2} (UTC)'.format(end_date.day, month[end_date.month-1],
                                                                       end_date.year, end_date.hour, end_date.minute)
 
-    message = u'\n:{} Page {} mise en {} {} par {}\n'.format(u'{{fait}}', article, protect_level, protect_time, admin)
+    message = u'\n:{} Page {} [[Spécial:Diff/{}|mise]] en {} {} par {}. ~~~~\n'.format(u'{{fait}}', article, revid, protect_level, protect_time, admin)
 
     match = section_content.find(u'<!-- Ne pas modifier la ligne qui suit -->')
     if match == -1:
@@ -74,7 +74,7 @@ def check_protect(current_time, article, site, section_content):
         start_date = datetime.strptime(log['timestamp'], '%Y-%m-%dT%H:%M:%SZ')
 
         if start_date >= current_time - timedelta(minutes=10):
-            return close_dpp(section_content, article, log['user'], protect)
+            return close_dpp(section_content, article, log['revid'], log['user'], protect)
 
     return False, section_content
 
@@ -84,11 +84,12 @@ def list_open_dpp(current_time, site):
     full_text = page.text
     sections = textlib.extract_sections(full_text, site)
     save_page = False
-    new_text = u'{{Wikipédia:Demande de protection de page/En-tête}}'
+    new_text = u'{{Wikipédia:Demande de protection de page/En-tête}}\n\n'
 
     for section in sections.sections:
-        section_content = section.content.strip()
+        section_content = section.content
 
+        print(section_content)
         if section.title.startswith(u'== {{a\'|'):
             title_templates = textlib.extract_templates_and_params(section.title)
             for title_template in title_templates:
@@ -103,7 +104,7 @@ def list_open_dpp(current_time, site):
                             if check:
                                 save_page = True
 
-        new_text += '\n\n' + section.title + '\n' + section_content
+        new_text += section.title + section_content
 
     if save_page:
         page.text = new_text
