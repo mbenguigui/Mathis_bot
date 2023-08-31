@@ -5,7 +5,7 @@ from mathis_bot_tools import can_run, timestamp_to_date, utc_to_paris
 from datetime import datetime, timedelta
 
 
-def close_dpp(section_content, article, revid, start_date, admin, protect):
+def close_dpp(section_content, article, revid, admin, start_date, protect):
     protect_type = u'edit'
     if u'create' in protect:
         protect_type = u'create'
