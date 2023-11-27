@@ -5,7 +5,7 @@ from mathis_bot_tools import can_run, timestamp_to_date, utc_to_paris
 from datetime import datetime, timedelta
 
 
-def close_dpp(section_content, article, revid, admin, start_date, protect):
+def close_dpp(section_content, article, revid, admin, is_cascade, start_date, protect):
     protect_type = u'edit'
     if u'create' in protect:
         protect_type = u'create'
@@ -23,14 +23,22 @@ def close_dpp(section_content, article, revid, admin, start_date, protect):
 
     protect_start = timestamp_to_date(utc_to_paris(start_date))
 
+    if is_cascade:
+        cascade = u' en cascade'
+    else:
+        cascade = str()
+
     if protect[protect_type][1] == 'infinity':
         protect_end = u'indéfiniment'
     else:
         protect_end = u'jusqu \'au ' + timestamp_to_date(utc_to_paris(datetime.strptime(protect[protect_type][1], '%Y-%m-%dT%H:%M:%SZ')))
 
-    message = u'\n:{} Page {} mise en {} {} par {} le [[Spécial:Diff/{}|{}]]. ~~~~\n'.format(u'{{fait}}',
+
+    
+    message = u'\n:{} Page {} mise en {}{} {} par {} le [[Spécial:Diff/{}|{}]]. ~~~~\n'.format(u'{{fait}}',
                                                                                              article,
                                                                                              protect_level,
+                                                                                             cascade,
                                                                                              protect_end,
                                                                                              admin,
                                                                                              revid,
@@ -78,7 +86,7 @@ def check_protect(current_time, article, site, section_content):
         start_date = datetime.strptime(log['timestamp'], '%Y-%m-%dT%H:%M:%SZ')
 
         if start_date >= current_time - timedelta(minutes=10):
-            return close_dpp(section_content, article, log['revid'], log['user'], start_date, protect)
+            return close_dpp(section_content, article, log['revid'], log['user'], log['params']['cascade'], start_date, protect)
 
     return False, section_content
 
