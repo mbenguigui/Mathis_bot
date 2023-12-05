@@ -33,8 +33,6 @@ def close_dpp(section_content, article, revid, admin, is_cascade, start_date, pr
     else:
         protect_end = u'jusqu \'au ' + timestamp_to_date(utc_to_paris(datetime.strptime(protect[protect_type][1], '%Y-%m-%dT%H:%M:%SZ')))
 
-
-    
     message = u'\n:{} Page {} mise en {}{} {} par {} le [[Spécial:Diff/{}|{}]]. ~~~~\n'.format(u'{{fait}}',
                                                                                              article,
                                                                                              protect_level,
