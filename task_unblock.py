@@ -27,6 +27,11 @@ def check_open_ra(text, user):
     return False
 
 
+def check_if_blocked(username, site):
+    user = pywikibot.User(site, username)
+    return u'oui' if user.is_blocked(username) else u'non'
+
+
 def make_ra(users, site):
     page = pywikibot.Page(site, u'Wikipédia:Requête aux administrateurs')
     text = page.text
@@ -37,7 +42,8 @@ def make_ra(users, site):
         if not check_open_ra(text, user):
             if not edit_summary_user:
                 edit_summary_user = user
-            text += u'\n\n{{subst:Utilisateur:Mathis bot/unblock|%s}}' % user
+            bloque = check_if_blocked(user, site)
+            text += u'\n\n{{subst:Utilisateur:Mathis bot/unblock|%s|bloque=%s}}' % user, bloque
             save_page = True
 
     if save_page:
