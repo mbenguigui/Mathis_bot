@@ -42,8 +42,8 @@ def make_ra(users, site):
         if not check_open_ra(text, user):
             if not edit_summary_user:
                 edit_summary_user = user
-            bloque = check_if_blocked(user, site)
-            text += u'\n\n{{subst:Utilisateur:Mathis bot/unblock|%s|bloque=%s}}' % (user, bloque)
+            blocked = check_if_blocked(user, site)
+            text += u'\n\n{{subst:Utilisateur:Mathis bot/unblock|%s|bloque=%s}}' % (user, blocked)
             save_page = True
 
     if save_page:
