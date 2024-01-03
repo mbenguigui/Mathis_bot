@@ -84,7 +84,10 @@ def check_protect(current_time, article, site, section_content):
         start_date = datetime.strptime(log['timestamp'], '%Y-%m-%dT%H:%M:%SZ')
 
         if start_date >= current_time - timedelta(minutes=10):
-            return close_dpp(section_content, article, log['revid'], log['user'], log['params']['cascade'], start_date, protect)
+            is_cascade = False
+            if 'cascade' in log['params']:
+                is_cascade = log['params']['cascade']
+            return close_dpp(section_content, article, log['revid'], log['user'], is_cascade, start_date, protect)
 
     return False, section_content
 
