@@ -51,11 +51,11 @@ def close_dpp(section_content, article, revid, admin, is_cascade, start_date, pr
     match = u'{{DPP début|statut=|date=<!--~~~~~-->}}'
     replace = u'{{DPP début|statut=oui|date=~~~~~}}'
     if section_content.find(match) == -1:
-        match = u'{{DPP début|statut=attente'
-        replace = u'{{DPP début|statut=oui'
+        match = u'{{DPP début|statut=attente|date=<!--~~~~~-->}}'
+        replace = u'{{DPP début|statut=oui|date=~~~~~}}'
         if section_content.find(match) == -1:
-            match = u'{{DPP début|statut=autre'
-            replace = u'{{DPP début|statut=oui'
+            match = u'{{DPP début|statut=autre|date=<!--~~~~~-->}}'
+            replace = u'{{DPP début|statut=oui|date=~~~~~}}'
             if section_content.find(match) == -1:
                 return True, section_content
     section_content = section_content.replace(match, replace, 1)
