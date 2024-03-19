@@ -14,15 +14,15 @@ def get_users(site):
     return users
 
 
-def check_open_ra(text, user):
+def check_open_dd(text, user):
     match = u'== Demande de déblocage de %s ==' % user
     if match in text:
-        ra = text[text.rindex(match):]
-        ra = ra[:ra.index(u"{{RA fin}}")]
-        templates = textlib.extract_templates_and_params(ra)
+        dd = text[text.rindex(match):]
+        dd = dd[:dd.index(u"==")]
+        templates = textlib.extract_templates_and_params(dd)
         for template in templates:
-            if template[0] == u"RA début":
-                if template[1][u'traitée'] != u'oui':
+            if template[0] == u"Dd":
+                if template[1][u'statut'] != u'oui':
                     return True
     return False
 
@@ -32,14 +32,14 @@ def check_if_blocked(username, site):
     return u'oui' if user.is_blocked(username) else u'non'
 
 
-def make_ra(users, site):
-    page = pywikibot.Page(site, u'Wikipédia:Requête aux administrateurs')
+def make_dd(users, site):
+    page = pywikibot.Page(site, u'Wikipédia:Demande de déblocage')
     text = page.text
     save_page = False
     edit_summary_user = ''
 
     for user in users:
-        if not check_open_ra(text, user):
+        if not check_open_dd(text, user):
             if not edit_summary_user:
                 edit_summary_user = user
             blocked = check_if_blocked(user, site)
@@ -56,7 +56,7 @@ def main():
 
     if can_run(site):
         users = get_users(site)
-        make_ra(users, site)
+        make_dd(users, site)
 
 
 if __name__ == '__main__':
