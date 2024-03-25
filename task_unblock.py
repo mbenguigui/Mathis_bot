@@ -18,7 +18,8 @@ def check_open_dd(text, user):
     match = u'== Demande de déblocage de %s ==' % user
     if match in text:
         dd = text[text.rindex(match):]
-        dd = dd[:dd.index(u"==")]
+        if u"\n==" in dd:
+            dd = dd[:dd.index(u"\n==")]
         templates = textlib.extract_templates_and_params(dd)
         for template in templates:
             if template[0] == u"Dd":
