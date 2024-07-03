@@ -16,7 +16,7 @@ def close_dpp(section_content, article, revid, admin, is_cascade, start_date, pr
         protect_level = u'[[Wikipédia:Protection|protection]]'
     elif protect[protect_type][0] == 'autoconfirmed':
         protect_level = u'[[Wikipédia:Semi-protection|semi-protection]]'
-    elif protect[protect_type][0] == 'autopatrolled':
+    elif protect[protect_type][0] == 'editextendedsemiprotected':
         protect_level = u'[[Wikipédia:Semi-protection|semi-protection étendue]]'
     else:
         protect_level = str()
