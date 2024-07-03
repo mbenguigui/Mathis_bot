@@ -31,16 +31,17 @@ def close_dpp(section_content, article, revid, admin, is_cascade, start_date, pr
     if protect[protect_type][1] == 'infinity':
         protect_end = u'indéfiniment'
     else:
-        protect_end = u'jusqu\'au ' + timestamp_to_date(utc_to_paris(datetime.strptime(protect[protect_type][1], '%Y-%m-%dT%H:%M:%SZ')))
+        protect_end = u'jusqu\'au ' + timestamp_to_date(utc_to_paris(datetime.strptime(protect[protect_type][1],
+                                                                                       '%Y-%m-%dT%H:%M:%SZ')))
 
     message = u'\n:{} Page {} mise en {}{} {} par {} le [[Spécial:Diff/{}|{}]]. ~~~~\n'.format(u'{{fait}}',
-                                                                                             article,
-                                                                                             protect_level,
-                                                                                             cascade,
-                                                                                             protect_end,
-                                                                                             admin,
-                                                                                             revid,
-                                                                                             protect_start)
+                                                                                               article,
+                                                                                               protect_level,
+                                                                                               cascade,
+                                                                                               protect_end,
+                                                                                               admin,
+                                                                                               revid,
+                                                                                               protect_start)
 
     match = section_content.find(u'<!-- Ne pas modifier la ligne qui suit -->')
     if match == -1:
@@ -125,7 +126,7 @@ def list_open_dpp(current_time, site):
 
 def main():
     site = pywikibot.Site('fr', 'wikipedia')
-    current_time = datetime.utcnow()
+    current_time = datetime.now(timezone.utc)
 
     if can_run(site):
         list_open_dpp(current_time, site)
