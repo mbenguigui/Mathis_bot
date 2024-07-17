@@ -1,4 +1,5 @@
-import pywikibot, re
+import pywikibot
+import re
 from mathis_bot_tools import can_run
 from pywikibot import textlib
 
@@ -17,8 +18,14 @@ def replace_flags(site):
         for template in templates:
             if template[0] == u'Infobox Élection' and u'pays' in template[1] and template[1][u'pays'] != u'France':
                 text = re.sub(r'(pays\s+=\s+)([A-Za-z-\-]+)', r'\1France', text, count=1, flags=re.IGNORECASE)
+
+                edit_summary = u'[[WP:RBOT|Requête bot]] : [[Spécial:Lien permanent/216881998#Drapeau pour les'
+                edit_summary += u' élections portée nationale en France|Remplacement de drapeaux pour les élections de'
+                edit_summary += u' portée nationale en France]]'
+
                 page.text = text
-                page.save(u'[[WP:RBOT|Requête bot]] : [[Spécial:Lien permanent/216881998#Drapeau pour les élections de portée nationale en France|Remplacement de drapeaux pour les élections de portée nationale en France]]')
+                page.save(edit_summary)
+
                 break
 
 
