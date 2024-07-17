@@ -137,3 +137,5 @@ oauth.txt
 \.run
 pywikibot.lwp
 pywikibot-Mathis_bot.lwp
+apicache/
+liste.txt
