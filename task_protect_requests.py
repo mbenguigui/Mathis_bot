@@ -2,7 +2,7 @@ import pywikibot
 import requests
 from pywikibot import textlib
 from mathis_bot_tools import can_run, timestamp_to_date, utc_to_paris
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 
 def close_dpp(section_content, article, revid, admin, is_cascade, start_date, protect):
