@@ -83,9 +83,9 @@ def check_protect(current_time, article, site, section_content):
         api_response = session.get(url=api_url, params=api_params)
         api_data = api_response.json()
         log = api_data['query']['logevents'][0]
-        start_date = utc.localize(datetime.strptime(log['timestamp'], '%Y-%m-%dT%H:%M:%SZ'))
+        start_date = datetime.strptime(log['timestamp'], '%Y-%m-%dT%H:%M:%SZ')
 
-        if start_date >= current_time - timedelta(minutes=10):
+        if utc.localize(start_date) >= current_time - timedelta(minutes=10):
             is_cascade = False
             if 'cascade' in log['params']:
                 is_cascade = log['params']['cascade']
