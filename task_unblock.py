@@ -4,7 +4,7 @@ from mathis_bot_tools import can_run
 
 
 def get_users(site):
-    cat = pywikibot.Category(site, 'Catégorie:Demande de déblocage')
+    cat = pywikibot.Category(site, u'Catégorie:Demande de déblocage')
     gen = pagegenerators.CategorizedPageGenerator(cat)
     return [user.title(with_ns=False) for user in gen if user.namespace() == 3]
 
