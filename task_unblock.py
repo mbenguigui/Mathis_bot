@@ -6,13 +6,7 @@ from mathis_bot_tools import can_run
 def get_users(site):
     cat = pywikibot.Category(site, u'Catégorie:Demande de déblocage')
     gen = pagegenerators.CategorizedPageGenerator(cat)
-    users = list()
-
-    for user in gen:
-        users.append(user.title(with_ns=False))
-
-    return users
-
+    return [user.title(with_ns=False) for user in gen if user.namespace() == 3]
 
 def check_open_dd(text, user):
     match = u'== Demande de déblocage de %s ==' % user
